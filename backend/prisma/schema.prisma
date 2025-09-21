@@ -16,4 +16,13 @@ model User{
   picture String
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  media Media[]
+}
+
+model Media{
+  id String @id @default(uuid())
+  fileUrl String
+  fileType String?
+  userId String 
+  user User @relation(fields: [userId], references: [id])
 }

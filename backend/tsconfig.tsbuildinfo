@@ -1,1 +1,1 @@
-{"root":["./src/main.ts","./src/config/config.ts","./src/config/prisma.ts","./src/middleware/verifytoken.ts","./src/routes/auth.route.ts","./src/routes/file.route.ts"],"version":"5.9.2"}
+{"root":["./src/main.ts","./src/config/config.ts","./src/config/firebase.ts","./src/config/prisma.ts","./src/middleware/verifytoken.ts","./src/routes/auth.route.ts","./src/routes/file.route.ts","./src/utils/fileupload.ts"],"version":"5.9.2"}

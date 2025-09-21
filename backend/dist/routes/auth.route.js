@@ -62,7 +62,7 @@ authRouter.get('/google/callback', async (req, res) => {
         user = userExist;
     }
     const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET_KEY);
-    res.send({ user, token });
+    res.redirect(`http://localhost:5173/?token=${token}`);
 });
 export default authRouter;
 //# sourceMappingURL=auth.route.js.map
