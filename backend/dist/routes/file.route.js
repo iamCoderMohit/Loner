@@ -2,13 +2,14 @@ import express from 'express';
 import { authMiddleware } from '../middleware/verifyToken.js';
 import { uploadFile } from '../utils/fileUpload.js';
 import { prisma } from '../config/prisma.js';
+import multer from 'multer';
 const fileRouter = express.Router();
 fileRouter.use(authMiddleware);
-fileRouter.post('/upload', async (req, res) => {
+const upload = multer({ storage: multer.memoryStorage() });
+fileRouter.post('/upload', upload.single("file"), async (req, res) => {
     try {
-        const localFilePath = "./src/upload/post-3.jpg";
-        const userId = "user123";
-        const url = await uploadFile(localFilePath, userId);
+        const userId = req.user.id;
+        const url = await uploadFile(req.file, userId);
         const media = await prisma.media.create({
             data: {
                 fileUrl: url,

@@ -10,7 +10,8 @@ const GOOGLE_CLIENT_ID = config.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = config.GOOGLE_CLIENT_SECRET
 const GOOGLE_ACCESS_TOKEN_URL = config.GOOGLE_ACCESS_TOKEN_URL
 const GOOGLE_TOKEN_INFO_URL = config.GOOGLE_TOKEN_INFO_URL
-const JWT_SECRET_KEY = config.JWT_SECRET_KEY
+const JWT_ACCESS_SECRET_KEY = config.JWT_ACCESS_SECRET_KEY
+const JWT_REFRESH_SECRET_KEY = config.JWT_REFRESH_SECRET_KEY
 const GOOGLE_CALLBACK_URL = "http%3A//localhost:3000/api/v1/auth/google/callback";
 
 const GOOGLE_OAUTH_SCOPES = [
@@ -80,9 +81,45 @@ authRouter.get('/google/callback', async (req, res) => {
         user = userExist
     }
 
-    const token = jwt.sign({id: user.id, email: user.email}, JWT_SECRET_KEY!)
+    const access_token = jwt.sign({id: user.id, email: user.email}, JWT_ACCESS_SECRET_KEY!, {expiresIn: "15m"})
+    const refresh_token = jwt.sign({id: user.id, email: user.email}, JWT_REFRESH_SECRET_KEY!, {expiresIn: "7d"})
 
-    res.redirect(`http://localhost:5173/?token=${token}`)
+    res.cookie("access_token", access_token, {
+        httpOnly: true,
+        secure: false, //true in production - https
+        sameSite: "lax"
+    })
+    res.cookie("refresh_token", refresh_token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+
+    res.redirect(`http://localhost:5173`)
+})
+
+authRouter.post('/refresh', (req, res) => {
+    const refreshToken = req.cookies.refresh_token
+
+    if(!refreshToken){
+        return res.status(404).json({
+            error: "no token provided"
+        })
+    }
+
+    jwt.verify(refreshToken, JWT_REFRESH_SECRET_KEY!, (err: any, decoded: any) => {
+        if(err) return res.status(401).json({error: "invalid refresh token"})
+            
+        const newAccessToken = jwt.sign({id: decoded.id, email: decoded.email}, JWT_ACCESS_SECRET_KEY!, {expiresIn: "15m"})
+
+        res.cookie("access_token", newAccessToken, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax"
+        })
+
+        res.json({msg: "refreshed access token"})
+    })
 })
 
 export default authRouter
