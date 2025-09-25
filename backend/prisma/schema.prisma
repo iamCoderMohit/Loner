@@ -14,15 +14,57 @@ model User{
   email String @unique
   name String 
   picture String
+  isPrivate Boolean @default(false)
+  username String? @unique
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
-  media Media[]
+
+  post Post[]
+  story Story[]
+  reel Reel[]
+
+  followers Follow[] @relation("Followers")
+  following Follow[] @relation("Following")
 }
 
-model Media{
+model Follow{
+  id String @id @default(uuid())
+
+  followerId String
+  followingId String
+
+  @@unique([followerId, followingId]) //when combined these always should be unique
+
+  follower User @relation("Followers", fields: [followerId], references: [id])
+  following User @relation("Following", fields: [followingId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Post{
   id String @id @default(uuid())
   fileUrl String
   fileType String?
   userId String 
   user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Story{
+  id String @id @default(uuid())
+  fileUrl String
+  fileType String?
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model Reel{
+  id String @id @default(uuid())
+  fileUrl String
+  fileType String?
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
 }
