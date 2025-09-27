@@ -18,7 +18,7 @@ function App() {
     formData.append("file", file!)
 
     try {
-      const res = await api.post("http://localhost:3000/api/v1/file/upload", formData)
+      const res = await api.post("http://localhost:3000/api/v1/file/uploadPost", formData)
 
       const data = await res.data
       console.log(data)

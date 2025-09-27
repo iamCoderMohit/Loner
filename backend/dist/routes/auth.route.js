@@ -2,6 +2,7 @@ import express from "express";
 import config from "../config/config.js";
 import { prisma } from "../config/prisma.js";
 import jwt from "jsonwebtoken";
+import { authMiddleware } from "../middleware/verifyToken.js";
 const authRouter = express.Router();
 const GOOGLE_OAUTH_URL = config.GOOGLE_OAUTH_URL;
 const GOOGLE_CLIENT_ID = config.GOOGLE_CLIENT_ID;
@@ -99,6 +100,65 @@ authRouter.post("/refresh", (req, res) => {
         });
         res.json({ msg: "refreshed access token" });
     });
+});
+//hit this check endpoint whenever username input field changes
+authRouter.post("/check", authMiddleware, async (req, res) => {
+    const { username } = req.body;
+    try {
+        const userExist = await prisma.user.findUnique({
+            where: {
+                username,
+            },
+        });
+        if (userExist) {
+            return res.status(400).json({
+                error: "username already taken",
+            });
+        }
+        res.json({
+            msg: "username available",
+        });
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            error: "can't set username",
+        });
+    }
+});
+//set username
+authRouter.put("/username", authMiddleware, async (req, res) => {
+    const myId = req.user.id;
+    const { username } = req.body;
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: myId,
+            },
+        });
+        if (!user) {
+            return res.status(404).json({
+                error: "user not found",
+            });
+        }
+        await prisma.user.update({
+            where: {
+                id: myId,
+            },
+            data: {
+                username,
+            },
+        });
+        res.json({
+            msg: "done",
+        });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: "can't set username, try again",
+        });
+    }
 });
 export default authRouter;
 //# sourceMappingURL=auth.route.js.map
