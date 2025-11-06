@@ -206,5 +206,24 @@ commentRouter.get("/all", verifyMedia, async (req, res) => {
 });
 
 //get all replies to a comment
+commentRouter.get('/allReplies', verifyMedia, async (req, res) => {
+  const {parentId} = req.body //send mediaId and type for verify media middleware
+  try {
+    const replies = await prisma.comment.findMany({
+      where: {
+        parentId
+      },
+      include: {
+        user: true
+      }
+    })
+
+    res.json(replies)
+  } catch (error) {
+    res.status(500).json({
+      "error": "something went wrong"
+    })
+  }
+})
 
 export default commentRouter;

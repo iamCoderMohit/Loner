@@ -27,6 +27,9 @@ model User{
 
   followers Follow[] @relation("Followers")
   following Follow[] @relation("Following")
+
+  sentMessages Message[] @relation("UserSentMessages")
+  receivedMessages Message[] @relation("UserReceivedMessages")
 }
 
 model Follow{
@@ -106,4 +109,17 @@ model CommentLike{
   comment Comment @relation(fields: [commentId], references: [id])
 
   @@unique([userId, commentId]) //prevent double likes
+}
+
+model Message{
+  id String @id @default(uuid())
+  senderId String
+  sender User @relation("UserSentMessages", fields: [senderId], references: [id])
+
+  receiverId String
+  receiver User @relation("UserReceivedMessages", fields: [receiverId], references: [id])
+
+  content String
+  createdAt DateTime @default(now())
+  read Boolean @default(false)
 }

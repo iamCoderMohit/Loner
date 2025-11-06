@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import mediaRouter from './routes/media.route.js'
 import followRouter from './routes/follow.route.js'
 import commentRouter from './routes/comment.route.js'
+import chatRouter from './routes/chat.route.js'
 
 const app = express()
 app.use(cookieParser())
@@ -21,5 +22,6 @@ app.use("/api/v1/file", fileRouter)
 app.use("/api/v1/media", mediaRouter)
 app.use("/api/v1/follow", followRouter)
 app.use("/api/v1/comment", commentRouter)
+app.use("/api/v1/chat", chatRouter)
 
 app.listen(3000, () => console.log("listening on 3000"))
