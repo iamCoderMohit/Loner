@@ -10,7 +10,7 @@ function Testimonials() {
         <div className="flex gap-5 mt-25">
             <ReviewCard image={user}  name="OLIVIA COLE" text="This app is the best when we talk about something new in social media apps"/>
             <ReviewCard image={user}  name="OLIVIA COLE" text="This app is the best when we talk about something new in social media apps"/>
-            <ReviewCard image={user}  name="OLIVIA COLE" text="This app is the best when we talk about something new in social media apps"/>
+            <ReviewCard image={user}  name="OLIVIA COLE" text="This app is the best when we talk about something new in social media apps"/> 
         </div>
     </div>
   )
