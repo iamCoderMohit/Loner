@@ -44,6 +44,9 @@ authRouter.get("/google/callback", async (req, res) => {
 
     const response = await fetch(GOOGLE_ACCESS_TOKEN_URL!, {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(data),
     });
 
@@ -102,7 +105,7 @@ authRouter.get("/google/callback", async (req, res) => {
       sameSite: "lax",
     });
 
-    res.redirect(`http://localhost:5173`);
+    res.redirect(`http://localhost:5173/setusername`);
   } catch (error) {
     console.error(error);
     res.status(500).json({

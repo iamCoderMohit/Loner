@@ -6,6 +6,8 @@ import Navbar from "../components/Navbar"
 import benefit from "../assets/benefit.png"
 import ui from "../assets/user-interface.png"
 import Testimonials from "../components/Testimonials"
+import FootCard from "../components/FootCard"
+import Footer from "../components/Footer"
 
 function Landing() {
   return (
@@ -17,12 +19,14 @@ function Landing() {
             <div className="absolute top-[-200px]">
                 <BlurCircle color="5E59F1" />
             </div>
-            <div className="absolute top-[200px] -right-10 z-10">
+            <div className="absolute top-[200px] -right-10">
                 <BlurCircle color="5E59F1" />
             </div>
             <Benefit image={benefit} topHeading="GLOBAL REACH" mainHeading="Worldwide Users" bodyText="We have users from all over the world so you can find and have fun with’em" btnText="FIND NEW FRIENDS" reverse={false}/>
             <Benefit image={ui} topHeading="SIMPLE INTERFACE" mainHeading="Easy to Use" bodyText="No complicated UI, give updates to friends quickly" btnText="LET'S EXPLORE" reverse={true}/>
             <Testimonials />
+            <FootCard />
+            <Footer />
         </div>
     </div>
   )

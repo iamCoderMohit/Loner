@@ -34,6 +34,9 @@ authRouter.get("/google/callback", async (req, res) => {
         };
         const response = await fetch(GOOGLE_ACCESS_TOKEN_URL, {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(data),
         });
         const access_token_data = await response.json();

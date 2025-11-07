@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom"
+
 function Navbar() {
   return (
     <div className="text-white font-[outfit] flex justify-between items-center h-20">
@@ -6,7 +8,7 @@ function Navbar() {
             <div className="cursor-pointer">About</div>
             <div className="cursor-pointer">Contact</div>
             <div className="cursor-pointer">Pricing</div>
-            <div className="cursor-pointer">Signup</div>
+            <div className="cursor-pointer"><Link to={"/signin"}>Signin</Link></div>
         </div>
     </div>
   )

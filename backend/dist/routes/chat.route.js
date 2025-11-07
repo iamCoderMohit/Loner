@@ -19,6 +19,8 @@ wss.on("connection", (ws) => {
         const senderId = jsonData.senderId;
         const receiverId = jsonData.receiverId;
         const content = jsonData.content; // the main msg
+        //trying to update the read receipt
+        // ws.on("mess") this is primarily the frontend work
         //storing to db
         try {
             await prisma.message.create({
@@ -28,7 +30,6 @@ wss.on("connection", (ws) => {
                     content,
                 },
             });
-            console.log("successfully stored");
         }
         catch (error) {
             console.error(error);

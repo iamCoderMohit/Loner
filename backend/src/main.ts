@@ -14,11 +14,13 @@ app.use(express.json())
 
 app.use(cors({
     origin: "http://localhost:5173",
-    credentials: true
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }))
 
 app.use("/api/v1/auth", authRouter)
-app.use("/api/v1/file", fileRouter)
+app.use("/api/v1/file", fileRouter) 
 app.use("/api/v1/media", mediaRouter)
 app.use("/api/v1/follow", followRouter)
 app.use("/api/v1/comment", commentRouter)
